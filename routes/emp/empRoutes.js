@@ -88,7 +88,7 @@ router.put("/update",auth,async(req,res)=>{
 )
 
 
-// task details for employee (/emp/tasks)
+// get all tasks details for employee (/emp/tasks)
 router.get("/tasks",auth,async(req,res)=>{
     const tasks=await taskModel.find({assignedTo:req.emp._id}).populate("assignedBy")
     if(tasks.length!=0){

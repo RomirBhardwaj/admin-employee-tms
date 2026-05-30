@@ -16,6 +16,7 @@ router.post("/signup",async (req,res)=>{
         return res.status(401).json({message:"Unauthorized"})
     }
     try{
+        // since email is unique 
         const exists= await adminModel.findOne({email:body.email})
         if(!exists){
             body.password=await bcrypt.hash(body.password,10)
@@ -41,11 +42,12 @@ router.post("/login",async(req,res)=>{
         if(adminData){
             const verifyPassword=await bcrypt.compare(body.password,adminData.password)
             if(verifyPassword){
+                
                 const token=jwt.sign({role:"admin",Id:adminData._id,email:adminData.email,},process.env.SECRET_KEY,{expiresIn: "7d"})
                 res.status(200).json({message:"Logged in successfully",admin:{id:adminData._id,name:adminData.name,email:adminData.email},token:token})
             }else{
                 res.status(401).json({message:"Entered wrong password"})
-            }   
+            }
         }else{
             res.status(401).json({message:"Admin not found"})
         }   
@@ -67,6 +69,7 @@ router.post("/createtask",auth ,async(req,res)=>{
             task:body.task,
             description:body.description,
             dueDate:body.dueDate,
+            // assigned by is filled in roue only 
             assignedBy:req.admin._id,
             assignedTo:body.assignedTo
         })

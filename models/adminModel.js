@@ -13,10 +13,6 @@ const adminSchema=new mongoose.Schema({
     password:{
         type:String,
         required:true
-    },
-    adminPassword:{
-        type:String,
-        required:true,
     }
 })
 

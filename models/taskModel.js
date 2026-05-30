@@ -12,6 +12,7 @@ const taskSchema=new mongoose.Schema({
         type:Date,
         required:true
     },
+    //employee tasks can also see details of admin
     assignedBy:{
         type: mongoose.Schema.Types.ObjectId,
         required:true,

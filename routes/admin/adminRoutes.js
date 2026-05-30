@@ -19,7 +19,6 @@ router.post("/signup",async (req,res)=>{
         const exists= await adminModel.findOne({email:body.email})
         if(!exists){
             body.password=await bcrypt.hash(body.password,10)
-            body.adminPassword=await bcrypt.hash(body.adminPassword,10)
             const adminData=await adminModel.create(body)
             res.status(200).json({message:"Admin created successfully",admin:{id:adminData._id,name:adminData.name,email:adminData.email}})
         }else{

@@ -1,6 +1,6 @@
 const mongoose=require("mongoose")
 
-const adminSchema=new mongoose.Schema({
+const userSchema=new mongoose.Schema({
     name:{
         type:String,
         required:true,
@@ -13,9 +13,14 @@ const adminSchema=new mongoose.Schema({
     password:{
         type:String,
         required:true
+    },role:{
+        type:String,
+        required:true,
+        enum: ['employee', 'admin', 'super-admin'],
+        default:"employee"
     }
 })
 
-const admin=mongoose.model("Admin",adminSchema);
+const user=mongoose.model("User",userSchema);
 
-module.exports=admin
+module.exports=user

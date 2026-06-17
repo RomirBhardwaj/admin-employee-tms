@@ -1,6 +1,132 @@
-<<<<<<< HEAD
-Okay the problem in the previous version of my admin-employee is that there are only 2 roles there that are admin and employee but if the roles will increase then the authentication if else will become complicated as well as the routes and models like I am managing an admin model as well as an employee model but if the roles increases and I have to include various more models and also have to manage various routes there also which is not a very good practice and makes our whole file complicated to tackle, hence here we will be only using one user model, because see the problem was that both of admin, employee or any other role model are identical and they are repetitive which is not a good practice so that's why we will use a single model that is user model here similar to that we will not make our routes complicated we will only use at max 2 routes one can be of authentication and another can be of task but for now here i am only using one single route.
-=======
-# admin
-a express js and mongo db based admin-employee task management system
->>>>>>> 9789a11c0ac4e3bc4d797f4b76fd9d7057244cb1
+<div align="center">
+
+# 🗂️ Admin Employee Task Manager
+
+**A role-based task management REST API built with Express.js & MongoDB**
+
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-000000?style=flat&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=flat&logo=jsonwebtokens&logoColor=white)
+
+</div>
+
+---
+
+## ⚡ Overview
+
+Pure backend system with three-tier RBAC — Super Admin, Admin, and Employee. Each role has strictly scoped access to routes via a scalable middleware factory pattern.
+
+---
+
+## 🏗️ Architecture
+
+```
+├── middleware/
+│   └── auth/
+│       ├── auth.js         # Verifies JWT → attaches req.user
+│       └── checkRole.js    # Higher-order role guard factory
+├── models/
+│   ├── userModel.js        # Single model, role enum
+│   └── taskModel.js        # Task with User refs
+├── routes/
+│   └── userRoutes.js       # All routes, single file
+├── seed.js                 # Super admin bootstrap (run once)
+└── server.js               # Entry point
+```
+
+---
+
+## 🔐 Role System
+
+| Role | How Created | Powers |
+|------|-------------|--------|
+| `super-admin` | Seed script (once) | Create admins, view all users |
+| `admin` | By super-admin only | Full task CRUD, view employees |
+| `employee` | Open signup | View & update own task status |
+
+---
+
+## 🛣️ API Routes
+
+### Auth & Users
+| Method | Route | Access | Description |
+|--------|-------|--------|-------------|
+| `POST` | `/login` | Public | Login — returns JWT |
+| `POST` | `/emp/signup` | Public | Employee registration |
+| `POST` | `/admin/createadmin` | Super Admin | Create an admin |
+| `GET` | `/details` | All | Own profile |
+| `PUT` | `/update` | Admin, Employee | Update own details |
+| `GET` | `/admins` | Super Admin, Admin | List all admins |
+| `GET` | `/employees` | Super Admin, Admin | List all employees |
+
+### Tasks
+| Method | Route | Access | Description |
+|--------|-------|--------|-------------|
+| `POST` | `/admin/createtask` | Admin | Create & assign task |
+| `PUT` | `/admin/updatetask/:id` | Admin | Update own task |
+| `DELETE` | `/admin/deletetask/:id` | Admin | Delete task |
+| `GET` | `/admin/tasks` | Admin | View tasks I assigned |
+| `GET` | `/emp/tasks` | Employee | View my assigned tasks |
+| `PUT` | `/emp/updatetask/:id` | Employee | Update task status |
+
+> **Status flow:** `pending` → `in-progress` → `completed`
+> Updates blocked after due date.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone & Install
+```bash
+git clone https://github.com/RomirBhardwaj/admin.git
+cd admin
+npm install
+```
+
+### 2. Environment Setup
+```bash
+# create .env file with:
+connection_string=your_mongodb_uri
+SECRET_KEY=your_jwt_secret
+```
+
+### 3. Seed Super Admin
+```bash
+node seed.js   # run once only
+```
+
+### 4. Start Server
+```bash
+npm run dev    # development
+npm start      # production
+```
+
+---
+
+## 🔑 Authentication
+
+Send JWT token in every protected request header:
+```
+Authorization: <your_token_here>
+```
+Token expires in **7 days**.
+
+---
+
+## 📦 Stack
+
+| Package | Purpose |
+|---------|---------|
+| `express` | HTTP server & routing |
+| `mongoose` | MongoDB ODM |
+| `jsonwebtoken` | JWT auth |
+| `bcrypt` | Password hashing |
+| `dotenv` | Environment config |
+| `nodemon` | Dev auto-restart |
+
+---
+
+<div align="center">
+  <sub>Built by <a href="https://github.com/RomirBhardwaj">Romir Bhardwaj</a></sub>
+</div>

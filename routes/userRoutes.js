@@ -60,12 +60,7 @@ router.post("/login",async(req,res)=>{
 // get user details (/details)
 router.get("/details",auth,async(req,res)=>{
     try{
-        const userData=await userModel.findById(req.user._id)
-        if(!userData){
-            return res.status(404).json({message:"User not found"})
-        }else{
-            res.status(200).json({status:true,user:{id:userData._id,name:userData.name,email:userData.email,role:userData.role}})
-        }
+        res.status(200).json({status:true,user:req.user})
     }catch(err){
         console.log("Error occured",err)
         res.status(500).json({message:"Internal server error"})
@@ -209,15 +204,15 @@ router.post("/emp/signup",async (req,res)=>{
     if(!body.name || !body.email || !body.password || !body.adminId){
         return res.status(400).json({message:"All fields are required"})
     }
+    try{
     const adminExists=await userModel.findById(body.adminId)
     if(!adminExists){
         return res.status(401).json({message:"Admin with the provided adminId does not exist"})
     }
-    try{
         const exists= await userModel.findOne({email:body.email})
         if(!exists){
             body.password=await bcrypt.hash(body.password,10)
-            const userData=await userModel.create(body)
+            const userData=await userModel.create({ name: body.name, email: body.email, password: body.password })
             res.status(200).json({message:"employee created successfully",emp:{id:userData._id,name:userData.name,email:userData.email}})
         }else{
             res.status(400).json({message:"employee already exists, please login/sign-in."})
@@ -259,16 +254,11 @@ router.put("/emp/updatetask/:id",auth,checkRole(["employee"]),async(req,res)=>{
         return res.status(400).json({ message: "Due date has passed, cannot update status" })
   }
     
-    if(status=="in-progress"||status=="completed"){
-        try{
+    if(status=="in-progress"||status=="completed"){  
             const taskData=await taskModel.findByIdAndUpdate(taskId,{
                 status:status
             },{new:true})
             res.status(200).json({message:"Status updated successfully",task:taskData})
-        }catch(err){
-            console.log("Error occured",err)
-            res.status(500).json({message:"Internal server error"})
-        }
     }
     else{return res.status(401).json({message:"Please enter valid status"})
 }

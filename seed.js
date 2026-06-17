@@ -19,13 +19,14 @@ async function fun(){
         super_admin_details.password=await bcrypt.hash(super_admin_details.password,10)
         super_admin_details.role="super-admin"
         const super_admin=await userModel.create(super_admin_details)
+        mongoose.disconnect()
         if(super_admin){
             console.log("super admin created successfully.\nSuper Admin :",{name:super_admin.name,email:super_admin.email,role:super_admin.role})
         }
     }catch(err){
+        mongoose.disconnect()
         console.log("Error occured",err)
     }
 
 }
 fun()
-mongoose.disconnect()

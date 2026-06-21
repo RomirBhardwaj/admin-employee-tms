@@ -43,7 +43,7 @@ router.post("/login",async(req,res)=>{
             const verifyPassword=await bcrypt.compare(body.password,userData.password)
             if(verifyPassword){
                 const token=jwt.sign({role:userData.role,Id:userData._id,email:userData.email,},process.env.SECRET_KEY,{expiresIn: "7d"})
-                res.status(200).json({message:"Logged in successfully",admin:{id:userData._id,name:userData.name,email:userData.email},token:token})
+                res.status(200).json({message:"Logged in successfully",user:{id:userData._id,name:userData.name,email:userData.email},token:token})
             }else{
                 res.status(401).json({message:"Entered wrong password"})
             }

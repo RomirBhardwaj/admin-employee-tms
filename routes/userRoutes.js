@@ -96,6 +96,8 @@ router.post("/admin/createtask",auth ,checkRole(["admin"]),async(req,res)=>{
         return res.status(400).json({message:"All fields are required"})
     }
     try{
+        const assignedToUser=await userModel.findById(body.assignedTo)
+        
         const taskData=await taskModel.create({
             task:body.task,
             description:body.description,
@@ -212,7 +214,7 @@ router.post("/emp/signup",async (req,res)=>{
         const exists= await userModel.findOne({email:body.email})
         if(!exists){
             body.password=await bcrypt.hash(body.password,10)
-            const userData=await userModel.create({ name: body.name, email: body.email, password: body.password })
+            const userData=await userModel.create({ name: body.name, email: body.email, password: body.password , adminId: body.adminId })
             res.status(200).json({message:"employee created successfully",emp:{id:userData._id,name:userData.name,email:userData.email}})
         }else{
             res.status(400).json({message:"employee already exists, please login/sign-in."})

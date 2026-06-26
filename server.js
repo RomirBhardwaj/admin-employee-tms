@@ -1,6 +1,8 @@
 const express=require("express")    
 const mongoose=require("mongoose")
-const userRoutes=require("./routes/userRoutes.js")
+const adminRoutes=require("./routes/adminRoutes.js")
+const empRoutes=require("./routes/empRoutes.js")
+const commonRoutes=require("./routes/commonRoutes.js")
 require("dotenv").config()
 
 mongoose.connect(process.env.connection_string).then(()=>{
@@ -11,7 +13,9 @@ mongoose.connect(process.env.connection_string).then(()=>{
 
     
 app.use(express.json())
-app.use("/",userRoutes)
+app.use("/admin",adminRoutes)
+app.use("/emp",empRoutes)
+app.use("/",commonRoutes)
 
 
 app.listen(3000,()=>{console.log("Server is running at port 3000")})

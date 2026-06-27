@@ -5,27 +5,26 @@ const taskModel=require("../models/taskModel")
 const auth=require("../middleware/auth/auth")
 const checkRole=require("../middleware/auth/checkRole")
 const bcrypt=require("bcrypt")
-const jwt=require("jsonwebtoken")
 
 
 // employee routes
 
 // signup route for employee (/emp/signup)
-router.post("/emp/signup",async (req,res)=>{
+router.post("/signup",async (req,res)=>{
     const body=req.body
-    if(!body.name || !body.email || !body.password || !body.adminId){
+    if(!body.name || !body.email || !body.password || !body.parentId){
         return res.status(400).json({message:"All fields are required"})
     }
     try{
-    const adminExists=await userModel.findById(body.adminId)
-    if(!adminExists){
-        return res.status(401).json({message:"Admin with the provided adminId does not exist"})
+    const adminExists = await userModel.findById(body.parentId)
+    if (!adminExists || adminExists.role !== "admin") {
+        return res.status(400).json({ message: "Valid admin parentId is required" })
     }
         const exists= await userModel.findOne({email:body.email})
         if(!exists){
             body.password=await bcrypt.hash(body.password,10)
-            const userData=await userModel.create({ name: body.name, email: body.email, password: body.password , adminId: body.adminId })
-            res.status(200).json({message:"employee created successfully",emp:{id:userData._id,name:userData.name,email:userData.email}})
+            const userData=await userModel.create({ name: body.name, email: body.email, password: body.password , parentId: body.parentId })
+            res.status(201).json({message:"employee created successfully",emp:{id:userData._id,name:userData.name,email:userData.email,parentId:userData.parentId}})
         }else{
             res.status(400).json({message:"employee already exists, please login/sign-in."})
         }
@@ -37,7 +36,7 @@ router.post("/emp/signup",async (req,res)=>{
 
 
 // get all tasks details for employee (/emp/tasks)
-router.get("/emp/tasks",auth,checkRole(["employee"]),async(req,res)=>{
+router.get("/tasks",auth,checkRole(["employee"]),async(req,res)=>{
     try{
         const tasks=await taskModel.find({assignedTo:req.user._id}).populate("assignedBy","-password")
         if(tasks.length!=0){
@@ -53,7 +52,7 @@ router.get("/emp/tasks",auth,checkRole(["employee"]),async(req,res)=>{
 
 
 // update status of assigned task (/emp/update)
-router.put("/emp/updatetask/:id",auth,checkRole(["employee"]),async(req,res)=>{
+router.put("/updatetask/:id",auth,checkRole(["employee"]),async(req,res)=>{
     const {status}=req.body
     const taskId=req.params.id
     try{

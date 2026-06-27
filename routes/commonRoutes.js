@@ -5,7 +5,6 @@ const taskModel=require("../models/taskModel")
 const auth=require("../middleware/auth/auth")
 const checkRole=require("../middleware/auth/checkRole")
 const bcrypt=require("bcrypt")
-const jwt=require("jsonwebtoken")
 
 
 // login route (super admin/admin/employee)  (/login)

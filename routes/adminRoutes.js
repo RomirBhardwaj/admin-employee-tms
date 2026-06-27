@@ -5,7 +5,6 @@ const taskModel=require("../models/taskModel")
 const auth=require("../middleware/auth/auth")
 const checkRole=require("../middleware/auth/checkRole")
 const bcrypt=require("bcrypt")
-const jwt=require("jsonwebtoken")
 
 
 //route to create a admin (/admin/createadmin) only super admin can create admin
@@ -43,14 +42,20 @@ router.post("/createtask",auth ,checkRole(["admin"]),async(req,res)=>{
     }
     try{
         const assignedToUser=await userModel.findById(body.assignedTo)
-        
+        if(!assignedToUser || assignedToUser.role!=="employee"){
+            return res.status(400).json({message:"Invalid assignedTo, only employee can be assigned task"})
+        }
+        if(assignedToUser.parentId.toString()!==req.user._id.toString()){
+            return res.status(400).json({message:"You can only assign task to your employees"})
+        }
+        if(new Date(body.dueDate)<new Date()){
+            return res.status(400).json({message:"Due date cannot be in the past"})
+        }
         const taskData=await taskModel.create({
             task:body.task,
             description:body.description,
             dueDate:body.dueDate,
-            // assigned by is filled in route only 
             assignedBy:req.user._id,
-            // for now we are not checking if the assignedTo is valid employee or not, we can add that check later
             assignedTo:body.assignedTo
         })
         res.status(200).json({message:"Task created successfully",task:taskData})

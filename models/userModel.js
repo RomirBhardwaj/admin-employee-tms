@@ -16,7 +16,9 @@ const userSchema=new mongoose.Schema({
     },
     parentId:{
         type:mongoose.Schema.Types.ObjectId,
-        required:true
+        // explicitly setting null:true to avoid mongoose validation error when creating super-admin user
+        // we cant set required:true because super-admin user will not have any parentId
+        null:true
     },
     role:{
         type:String,

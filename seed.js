@@ -9,7 +9,7 @@ mongoose.connect(process.env.connection_string).then(()=>{
 
 
 
-const super_admin_details={name:"super admin",
+const super_admin_details={name:"sup-tester-1",
     email:"superadmin1@email.com",
     password:"superadmin123",
     parentId:null

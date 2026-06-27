@@ -13,7 +13,12 @@ const userSchema=new mongoose.Schema({
     password:{
         type:String,
         required:true
-    },role:{
+    },
+    parentId:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
+    },
+    role:{
         type:String,
         required:true,
         enum: ['employee', 'admin', 'super-admin'],

@@ -11,7 +11,8 @@ mongoose.connect(process.env.connection_string).then(()=>{
 
 const super_admin_details={name:"super admin",
     email:"superadmin1@email.com",
-    password:"superadmin123"
+    password:"superadmin123",
+    parentId:null
 };
 async function fun(){
     try{

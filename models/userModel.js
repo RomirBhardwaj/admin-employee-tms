@@ -13,7 +13,14 @@ const userSchema=new mongoose.Schema({
     password:{
         type:String,
         required:true
-    },role:{
+    },
+    parentId:{
+        type:mongoose.Schema.Types.ObjectId,
+        // explicitly setting null:true to avoid mongoose validation error when creating super-admin user
+        // we cant set required:true because super-admin user will not have any parentId
+        null:true
+    },
+    role:{
         type:String,
         required:true,
         enum: ['employee', 'admin', 'super-admin'],

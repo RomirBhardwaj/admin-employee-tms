@@ -5,21 +5,24 @@ const taskModel=require("../models/taskModel")
 const auth=require("../middleware/auth/auth")
 const checkRole=require("../middleware/auth/checkRole")
 const bcrypt=require("bcrypt")
-const jwt=require("jsonwebtoken")
 
 
 //route to create a admin (/admin/createadmin) only super admin can create admin
-router.post("/admin/createadmin",auth,checkRole(["super-admin"]),async(req,res)=>{
+router.post("/createadmin",auth,checkRole(["super-admin"]),async(req,res)=>{
     const admin_data=req.body
-    if(!admin_data.name || !admin_data.email || !admin_data.password){
+    if(!admin_data.name || !admin_data.email || !admin_data.password || !admin_data.parentId){
         return res.status(400).json({message:"All fields are required"})
     }
     try{
         const exists= await userModel.findOne({email:admin_data.email})
         if(!exists){
+            const parent=await userModel.findById(admin_data.parentId)
+            if(!parent || parent.role!=="super-admin"){
+                return res.status(400).json({message:"Invalid parentId, only super-admin can create admin"})
+            }
             admin_data.password=await bcrypt.hash(admin_data.password,10)
-            const admin=await userModel.create({name:admin_data.name,email:admin_data.email,password:admin_data.password,role:"admin"})
-            res.status(200).json({message:"Admin created successfully",admin:{id:admin._id,name:admin.name,email:admin.email}})
+            const admin=await userModel.create({name:admin_data.name,email:admin_data.email,password:admin_data.password,role:"admin",parentId:admin_data.parentId})
+            res.status(200).json({message:"Admin created successfully",admin:{id:admin._id,name:admin.name,email:admin.email,parentId:admin.parentId}})
         }else{
             res.status(400).json({message:"Admin already exists, please login/sign-in."})
         }
@@ -32,21 +35,27 @@ router.post("/admin/createadmin",auth,checkRole(["super-admin"]),async(req,res)=
 
 
 // create task route (/admin/createtask)
-router.post("/admin/createtask",auth ,checkRole(["admin"]),async(req,res)=>{
+router.post("/createtask",auth ,checkRole(["admin"]),async(req,res)=>{
     const body=req.body
     if(!body.task || !body.dueDate || !body.assignedTo ){
         return res.status(400).json({message:"All fields are required"})
     }
     try{
         const assignedToUser=await userModel.findById(body.assignedTo)
-        
+        if(!assignedToUser || assignedToUser.role!=="employee"){
+            return res.status(400).json({message:"Invalid assignedTo, only employee can be assigned task"})
+        }
+        if(assignedToUser.parentId.toString()!==req.user._id.toString()){
+            return res.status(400).json({message:"You can only assign task to your employees"})
+        }
+        if(new Date(body.dueDate)<new Date()){
+            return res.status(400).json({message:"Due date cannot be in the past"})
+        }
         const taskData=await taskModel.create({
             task:body.task,
             description:body.description,
             dueDate:body.dueDate,
-            // assigned by is filled in route only 
             assignedBy:req.user._id,
-            // for now we are not checking if the assignedTo is valid employee or not, we can add that check later
             assignedTo:body.assignedTo
         })
         res.status(200).json({message:"Task created successfully",task:taskData})
@@ -59,7 +68,7 @@ router.post("/admin/createtask",auth ,checkRole(["admin"]),async(req,res)=>{
 
 // update task (/admin/updatetask/:id)
 // for updating task only admin who created the task can update the task
-router.put("/admin/updatetask/:id",auth,checkRole(["admin"]),async(req,res)=>{
+router.put("/updatetask/:id",auth,checkRole(["admin"]),async(req,res)=>{
     const body=req.body
     const taskId=req.params.id
     if(!body.task || !body.dueDate || !body.assignedTo ){
@@ -82,7 +91,7 @@ router.put("/admin/updatetask/:id",auth,checkRole(["admin"]),async(req,res)=>{
 
 
 // delete task (/admin/deletetask/:id)
-router.delete("/admin/deletetask/:id",auth,checkRole(["admin"]),async (req,res)=>{
+router.delete("/deletetask/:id",auth,checkRole(["admin"]),async (req,res)=>{
     const id=req.params.id;
     try{
         const deletedTask=await taskModel.findByIdAndDelete(id) 
@@ -99,7 +108,7 @@ router.delete("/admin/deletetask/:id",auth,checkRole(["admin"]),async (req,res)=
 
 
 // get all assigned tasks details (/admin/tasks)
-router.get("/admin/tasks",auth,checkRole(["admin"]),async(req,res)=>{
+router.get("/tasks",auth,checkRole(["admin"]),async(req,res)=>{
     try{
         const tasks=await taskModel.find({assignedBy:req.user._id}).populate("assignedTo","-password")   
         if(tasks.length!=0){
@@ -115,7 +124,7 @@ router.get("/admin/tasks",auth,checkRole(["admin"]),async(req,res)=>{
 
 
 //get all admins (/admin/admins)
-router.get("/admin/admins",auth,checkRole(["super-admin","admin"]),async(req,res)=>{
+router.get("/admins",auth,checkRole(["super-admin","admin"]),async(req,res)=>{
     try{
         const admins=await userModel.find({role:"admin"}).select("-password")   //select("-password") is used to exclude password field from the result
         res.status(200).json({status:true,count:admins.length,admins:admins})
@@ -127,7 +136,7 @@ router.get("/admin/admins",auth,checkRole(["super-admin","admin"]),async(req,res
 
 
 //get all employees (/admin/employees)
-router.get("/admin/employees",auth,checkRole(["super-admin","admin"]),async(req,res)=>{
+router.get("/employees",auth,checkRole(["super-admin","admin"]),async(req,res)=>{
     try{
         const employees=await userModel.find({role:"employee"}).select("-password")   //select("-password") is used to exclude password field from the result
         res.status(200).json({status:true,count:employees.length,employees:employees})

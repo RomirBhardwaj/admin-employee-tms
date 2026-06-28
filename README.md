@@ -20,7 +20,7 @@
 ---
 
 ## 🧭 Table of Contents
-[Overview](#-overview) • [Tech Stack](#-tech-stack) • [Role System](#-role-hierarchy) • [Architecture](#-architecture) • [API Routes](#-api-routes) • [Quick Start](#-quick-start) • [Examples](#-quick-examples) • [Roadmap](#-roadmap)
+[Overview](#-overview) • [Tech Stack](#-tech-stack) • [Role System](#-role-hierarchy) • [Architecture](#-architecture) • [API Routes](#-api-routes) • [Quick Start](#-quick-start) 
 
 ---
 

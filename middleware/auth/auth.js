@@ -13,8 +13,7 @@ try{
         return res.status(401).json({message:"Unauthorized"})
     }
 }catch(err){
-    console.log("Error occured",err)
-    res.status(401).json({message:"Unauthorized"})
+    next(err)
 }
 }
 

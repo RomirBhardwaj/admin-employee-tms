@@ -64,26 +64,16 @@ status    : Improving day by day 📈
 ## 🔐 Role Hierarchy
 
 ```
-         ┌──────────────────────────────────────┐
-     │         👑 SUPER ADMIN               │
-     │   parentId: null                     │
-     │   Created via seed script (once)     │
-     │   Creates & manages all admins       │
-     └──────────┬───────────────┬───────────┘
-                │               │
-     ┌──────────▼───┐     ┌─────▼────────┐
-     │  🧑💼 ADMIN A  │     │  🧑💼 ADMIN B  │
-     │ parentId:    │     │ parentId:    │
-     │ super-admin  │     │ super-admin  │
-     │ Creates &    │     │ Creates &    │
-     │ assigns tasks│     │ assigns tasks│
-     └──┬───────┬───┘     └──┬───────────┘
-        │       │             │
-   ┌────▼──┐ ┌──▼────┐  ┌────▼──┐
-   │ 👷 E1 │ │ 👷 E2 │  │ 👷 E3 │
-   │parent:│ │parent:│  │parent:│
-   │AdminA │ │AdminA │  │AdminB │
-   └───────┘ └───────┘  └───────┘
+👑 Super Admin  ─────────────────  parentId: null
+          │
+  ┌───────┴──────┐
+  │              │
+🧑‍💼 Admin A   🧑‍💼 Admin B  ─────  parentId: super-admin
+    │    │       │
+    │    │       │
+    👷  👷      👷  ──────────  parentId: admin
+    E1  E2      E3
+
 ```
 
 > Each admin can **only** assign tasks to their own employees. Cross-team assignment is blocked.

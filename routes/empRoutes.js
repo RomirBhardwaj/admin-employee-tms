@@ -5,7 +5,7 @@ const taskModel=require("../models/taskModel")
 const auth=require("../middleware/auth/auth")
 const checkRole=require("../middleware/auth/checkRole")
 const bcrypt=require("bcrypt")
-const apiError=require("../apiError")
+const apiError=require("../middleware/error/apiError")
 
 // employee routes
 

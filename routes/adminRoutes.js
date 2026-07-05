@@ -5,7 +5,7 @@ const taskModel=require("../models/taskModel")
 const auth=require("../middleware/auth/auth")
 const checkRole=require("../middleware/auth/checkRole")
 const bcrypt=require("bcrypt")
-const apiError=require("../apiError")
+const apiError=require("../middleware/error/apiError")
 
 //route to create a admin (/admin/createadmin) only super admin can create admin
 router.post("/createadmin",auth,checkRole(["super-admin"]),async(req,res,next)=>{

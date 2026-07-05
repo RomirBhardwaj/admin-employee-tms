@@ -36,8 +36,8 @@ stack     : Node.js + Express.js + MongoDB
 auth      : JWT (7 day expiry)
 roles     : [super-admin, admin, employee]
 hierarchy : parentId field links users to their parent
-pattern   : Single User Model + Middleware Factory + Route Splitting
-status    : ✅ Production Ready
+pattern   : Single User Model + Middlewares + Route Splitting
+status    : Improving day by day 📈
 ```
 
 ---
@@ -94,18 +94,22 @@ status    : ✅ Production Ready
 
 ```
 📦 admin-employee
-├── 📂 middleware/auth/
-│   ├── 🔐 auth.js           ← Verifies JWT, attaches req.user + parentId
-│   └── 🛡️  checkRole.js    ← Higher-order role guard factory
+├── 📂 middleware/
+│   ├── 📂 auth/
+│   │   ├── 🔐 auth.js           ← Verifies JWT, attaches req.user + parentId
+│   │   └── 🛡️  checkRole.js    ← Higher-order role guard factory
+│   └── 📂 error/
+│       ├── ⚠️  errorHandler.js  ← Centralized error handling middleware
+│       └── 💥 apiError.js       ← Custom error class
 ├── 📂 models/
-│   ├── 👤 userModel.js      ← Single User model + role + parentId
-│   └── ✅ taskModel.js      ← Task model + User refs + timestamps
+│   ├── 👤 userModel.js          ← Single User model + role + parentId
+│   └── ✅ taskModel.js          ← Task model + User refs + timestamps
 ├── 📂 routes/
-│   ├── 🌐 commonRoutes.js   ← /login, /details, /update
-│   ├── 👑 adminRoutes.js    ← All /admin/* routes
-│   └── 👷 empRoutes.js      ← All /emp/* routes
-├── 🌱 seed.js               ← Super admin bootstrap (run once)
-└── 🚀 server.js             ← Entry point + route mounting
+│   ├── 🌐 commonRoutes.js       ← /login, /details, /update
+│   ├── 👑 adminRoutes.js        ← All /admin/* routes
+│   └── 👷 empRoutes.js          ← All /emp/* routes
+├── 🌱 seed.js                   ← Super admin bootstrap (run once)
+└── 🚀 server.js                 ← Entry point + route mounting
 ```
 
 ---

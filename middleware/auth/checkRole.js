@@ -1,5 +1,5 @@
 // authoriztion middleware to check if the user has the required role(s) to access a route
-const apiError=require("../../apiError")
+const apiError=require("../error/apiError")
 const checkRole = (allowedRoles) => {
     return (req, res, next) => {
         try{

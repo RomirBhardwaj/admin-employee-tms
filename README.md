@@ -4,7 +4,7 @@
 
 <br/>
 
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=3000&pause=800&color=1BBDFF&center=true&vCenter=true&width=650&lines=%F0%9F%94%90+JWT+Auth+%2B+Role+Based+Access+Control;%F0%9F%91%91+Super+Admin+%E2%86%92+Admin+%E2%86%92+Employee+Hierarchy;Quick+fo%F0%9F%93%A6+Node.js+%2B+Express.js+%2B+MongoDB" alt="Typing SVG" /></a>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=3000&pause=800&color=1BBDFF&center=true&vCenter=true&width=650&lines=%F0%9F%94%90+JWT+Auth+%2B+Role+Based+Access+Control;%F0%9F%91%91+Super+Admin+%E2%86%92+Admin+%E2%86%92+Employee+Hierarchy;%F0%9F%93%A6+Node.js+%2B+Express.js+%2B+MongoDB" alt="Typing SVG" /></a>
 
 <br/>
 
@@ -20,7 +20,7 @@
 ---
 
 ## 🧭 Table of Contents
-[Overview](#-overview) • [Tech Stack](#-tech-stack) • [Role System](#-role-hierarchy) • [Architecture](#-architecture) • [API Routes](#-api-routes) • [Quick Start](#-quick-start) 
+[Overview](#-overview) • [Tech Stack](#-tech-stack) • [Role Hierarchy](#-role-hierarchy) • [Architecture](#-architecture) • [Request Lifecycle](#-request-lifecycle) • [Route Matrix](#-route--role-matrix) • [Task Lifecycle](#-task-status-lifecycle) • [Quick Start](#-quick-start)
 
 ---
 
@@ -73,7 +73,6 @@ status    : Improving day by day 📈
     │    │       │
     👷  👷      👷  ──────────  parentId: admin
     E1  E2      E3
-
 ```
 
 > Each admin can **only** assign tasks to their own employees. Cross-team assignment is blocked.
@@ -206,140 +205,6 @@ npm run dev     # development (nodemon)
 npm start       # production
 ```
 > 🌐 Runs at **http://localhost:3000**
-
----
-<!-- 
-## 💡 Quick Examples
-
-<details>
-<summary>🔐 Login (all roles)</summary>
-
-```bash
-curl -X POST http://localhost:3000/login \
-  -H "Content-Type: application/json" \
-  -d '{"email": "admin@example.com", "password": "pass123"}'
-```
-</details>
-
-<details>
-<summary>👑 Create Admin (super-admin only)</summary>
-
-```bash
-curl -X POST http://localhost:3000/admin/createadmin \
-  -H "Authorization: <super_admin_token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Admin One",
-    "email": "admin@example.com",
-    "password": "pass123",
-    "parentId": "<super_admin_id>"
-  }'
-```
-</details>
-
-<details>
-<summary>👷 Employee Signup (requires admin parentId)</summary>
-
-```bash
-curl -X POST http://localhost:3000/emp/signup \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "John Doe",
-    "email": "john@example.com",
-    "password": "pass123",
-    "parentId": "<admin_id>"
-  }'
-```
-</details>
-
-<details>
-<summary>✅ Create Task (admin — own employees only)</summary>
-
-```bash
-curl -X POST http://localhost:3000/admin/createtask \
-  -H "Authorization: <admin_token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "task": "Fix login bug",
-    "description": "500 error on wrong password",
-    "assignedTo": "<employee_id>",
-    "dueDate": "2026-08-18"
-  }'
-```
-</details>
-
-<details>
-<summary>🔄 Update Status (employee)</summary>
-
-```bash
-curl -X PUT http://localhost:3000/emp/updatetask/<taskId> \
-  -H "Authorization: <employee_token>" \
-  -H "Content-Type: application/json" \
-  -d '{"status": "in-progress"}'
-```
-</details>
-
----
-
-## 🏆 GitHub Trophies
-
-<div align="center">
-
-[![trophy](https://github-profile-trophy.vercel.app/?username=RomirBhardwaj&theme=tokyonight&no-frame=true&row=1&column=6)](https://github.com/ryo-ma/github-profile-trophy)
-
-</div>
-
----
-
-## 📊 GitHub Stats
-
-<div align="center">
-
-<img src="https://github-readme-stats.vercel.app/api?username=RomirBhardwaj&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=6C63FF&icon_color=48C774&text_color=ffffff" height="165"/>
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=RomirBhardwaj&layout=compact&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=6C63FF&text_color=ffffff" height="165"/>
-
-</div>
-
-<div align="center">
-
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=RomirBhardwaj&theme=tokyonight&hide_border=true&background=0D1117&stroke=6C63FF&ring=6C63FF&fire=48C774&currStreakLabel=ffffff&sideLabels=ffffff&dates=888888" width="55%"/>
-
-</div>
-
----
-
-## 📈 Contribution Graph
-
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=RomirBhardwaj&theme=react-dark&bg_color=0D1117&color=6C63FF&line=48C774&point=00D4FF&area=true&hide_border=true" width="100%"/>
-
----
-
-## 💬 Dev Quote
-
-<div align="center">
-
-[![Readme Quotes](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=tokyonight)](https://github.com/piyushsuthar/github-readme-quotes)
-
-</div>
-
----
-
-## 🗺️ Roadmap
-
-- [x] 🔐 JWT Authentication
-- [x] 👑 Three-tier RBAC system
-- [x] 🏗️ Middleware factory `checkRole()`
-- [x] 🔗 Parent-child user hierarchy via `parentId`
-- [x] ✅ Admin can only assign tasks to own employees
-- [x] 🗂️ Route splitting — adminRoutes, empRoutes, commonRoutes
-- [x] 🔒 bcrypt password hashing
-- [x] 📚 MongoDB refs + populate()
-- [ ] 📧 Invite-based admin registration via email
-- [ ] 📄 Pagination & filtering on routes
-- [ ] 🛡️ Input validation with Zod
-- [ ] 🔁 Refresh token support
-- [ ] 🧪 Unit & integration tests (Jest)
-- [ ] 🚀 Deploy to Railway/Render -->
 
 ---
 

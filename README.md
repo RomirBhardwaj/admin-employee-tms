@@ -64,7 +64,7 @@ status    : Improving day by day 📈
 ## 🔐 Role Hierarchy
 
 ```
-     ┌──────────────────────────────────────┐
+         ┌──────────────────────────────────────┐
      │         👑 SUPER ADMIN               │
      │   parentId: null                     │
      │   Created via seed script (once)     │
@@ -72,7 +72,7 @@ status    : Improving day by day 📈
      └──────────┬───────────────┬───────────┘
                 │               │
      ┌──────────▼───┐     ┌─────▼────────┐
-     │  🧑‍💼 ADMIN A  │     │  🧑‍💼 ADMIN B  │
+     │  🧑💼 ADMIN A  │     │  🧑💼 ADMIN B  │
      │ parentId:    │     │ parentId:    │
      │ super-admin  │     │ super-admin  │
      │ Creates &    │     │ Creates &    │

@@ -4,7 +4,7 @@
 
 <br/>
 
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=3000&pause=800&color=1BBDFF&center=true&vCenter=true&width=650&lines=%F0%9F%94%90+JWT+Auth+%2B+Role+Based+Access+Control;%F0%9F%91%91+Super+Admin+%E2%86%92+Admin+%E2%86%92+Employee+Hierarchy;Quick+fo%F0%9F%93%A6+Node.js+%2B+Express.js+%2B+MongoDBx+jumps+nightly+above+wizard" alt="Typing SVG" /></a>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=3000&pause=800&color=1BBDFF&center=true&vCenter=true&width=650&lines=%F0%9F%94%90+JWT+Auth+%2B+Role+Based+Access+Control;%F0%9F%91%91+Super+Admin+%E2%86%92+Admin+%E2%86%92+Employee+Hierarchy;Quick+fo%F0%9F%93%A6+Node.js+%2B+Express.js+%2B+MongoDB" alt="Typing SVG" /></a>
 
 <br/>
 

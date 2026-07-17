@@ -7,10 +7,13 @@ const checkRole=require("../middleware/auth/checkRole")
 const bcrypt=require("bcrypt")
 const apiError=require("../middleware/error/apiError")
 
+const validation=require("../middleware/validation/inputValidation")
+const inputUserSchema=require("../inputSchema/inputUserModel")
+
 // employee routes
 
 // signup route for employee (/emp/signup)
-router.post("/signup",async (req,res,next)=>{
+router.post("/signup",validation(inputUserSchema),async (req,res,next)=>{
     const body=req.body
     try{
     if(!body.name || !body.email || !body.password || !body.parentId){

@@ -8,6 +8,8 @@ const bcrypt=require("bcrypt")
 const apiError=require("../middleware/error/apiError")
 const jwt=require("jsonwebtoken")
 
+
+
 // login route (super admin/admin/employee)  (/login)
 router.post("/login",async(req,res,next)=>{
     const body=req.body

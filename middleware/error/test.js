@@ -3,4 +3,4 @@ const test=(err1,err2,req,res,next)=>{
    next(err)
 }
 
-module.exports=test
+module.exports=test        

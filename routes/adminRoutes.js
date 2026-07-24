@@ -118,12 +118,19 @@ router.get("/tasks",auth,checkRole(["admin"]),async(req,res,next)=>{
 })
 
 
+
+
 //get all admins (/admin/admins)
 router.get("/admins",auth,checkRole(["super-admin","admin"]),async(req,res,next)=>{
     try{
-        const admins=await userModel.find({role:"admin"}).select("-password")   //select("-password") is used to exclude password field from the result
+        const queries=req.query
+        const limit=parseInt(queries.limit) 
+        const skip=parseInt(queries.skip)*limit
+        const sort=queries.sort||"name"
+        const admins=await userModel.find({role:"admin"}).select("-password").skip(skip).limit(limit).sort(sort)   //select("-password") is used to exclude password field from the result
         res.status(200).json({status:true,count:admins.length,admins:admins})
     }catch(err){
+        console.log("Error in getting admins",err)
         next(err)
     }
 })
